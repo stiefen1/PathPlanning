@@ -170,7 +170,7 @@ class AStar:
         :param s: current state
         :return: f
         """
-
+        # Heuristic returns always 5, g[s] is ~100
         return self.g[s] + self.heuristic(s)
 
     def extract_path(self, PARENT):
@@ -203,6 +203,9 @@ class AStar:
 
         if heuristic_type == "manhattan":
             return abs(goal[0] - s[0]) + abs(goal[1] - s[1])
+        elif heuristic_type == "risk":
+            assert hasattr(self.Env, 'risk_from_discrete_coord'), "No discrete risk function in the environment"
+            return self.Env.risk_from_discrete_coord(s[0], s[1])
         else:
             return math.hypot(goal[0] - s[0], goal[1] - s[1])
 
